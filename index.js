@@ -53,11 +53,10 @@ licenseCheckerProcess.on('close', (code) => {
             console.log('Added ' + chalk.yellow(packageName) + ' to dependency list ...');
         } else {
             // Add additional version (if needed)
-            // console.log(currentRequirements[packageName]);
-            // if (!currentRequirements[packageName].version.includes(packageVersion)) {
-            //     currentRequirements[packageName].version.push(packageVersion);
-            //     console.log('Added ' + chalk.cyan(packageVersion) + ' to version list ...');
-            // }
+            if (!currentRequirements[packageName].versions.includes(packageVersion)) {
+                currentRequirements[packageName].versions.push(packageVersion);
+                console.log('Added ' + chalk.cyan(packageVersion) + ' to version list ...');
+            }
         }
     }
     // console.log(currentRequirements);
