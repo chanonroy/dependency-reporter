@@ -1,0 +1,14 @@
+{
+  "name": "version-checker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "setup": "yarn install",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "license-report": "^2.1.3"
+  }
+}
