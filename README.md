@@ -1,3 +1,3 @@
-yarn install
+`yarn setup`
 
-node index.js "${PATH}"
+`node index.js "${PATH}"`
