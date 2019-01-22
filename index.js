@@ -18,7 +18,7 @@ if (fs.existsSync(cachePath)) {
 };
 
 // Get list of packages and only take values that we want
-const licenseChecker = spawn('license-report', [
+const licenseCheckerProcess = spawn('license-report', [
     '--only=prod',
     '--output=json',
     `--package=${packageJsonPath}`]
@@ -27,17 +27,17 @@ const licenseChecker = spawn('license-report', [
 // To hold payload from license-report
 var newRequirements = [];
 
-licenseChecker.stdout.on('data', (data) => {
+licenseCheckerProcess.stdout.on('data', (data) => {
     newRequirements = JSON.parse(data.toString());
   });
-licenseChecker.on('close', (code) => {
+licenseCheckerProcess.on('close', (code) => {
     for (var p in newRequirements) {
         // Get values that we need from license-report
         const package = newRequirements[p];
         const packageName = package.name;
         const packageVersion = package.comment;
         const packageLink = package.link;
-    
+
         if (currentRequirements[packageName] === undefined) {
             // Add to requirements list 
             /* FORMAT
@@ -52,12 +52,15 @@ licenseChecker.on('close', (code) => {
             }
             console.log('Added ' + chalk.yellow(packageName) + ' to dependency list ...');
         } else {
-            // Check for versioning
-            // TODO: versioning
+            // Add additional version (if needed)
+            if (!currentRequirements[packageName].version.includes(packageVersion)) {
+                currentRequirements[packageName].version.push(packageVersion);
+                console.log('Added ' + chalk.cyan(packageVersion) + ' to version list ...');
+            }
         }
     }
     // console.log(currentRequirements);
     fs.writeFile(cachePath, JSON.stringify(currentRequirements), 'utf8', function(resp) {
-        console.log(chalk.green('Done.'));
+        console.log(chalk.green('Finished. New dependency file saved.'));
     })
 });
